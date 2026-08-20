@@ -5,7 +5,7 @@
 :root {
   --font-interface: "Manrope Variable", "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-editorial: "Playfair Display Variable", "Playfair Display", Georgia, serif;
-  --font-navigation: "Manrope Variable", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-navigation: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -45,8 +45,8 @@ nav, button, input, textarea, select, label { font-variation-settings: "wght" 52
 .admin-shell nav,
 .admin-shell nav * {
   font-family: var(--font-navigation) !important;
-  font-variation-settings: "wght" 610;
-  letter-spacing: .018em;
+  font-variation-settings: "wght" 580;
+  letter-spacing: .006em;
 }
 main :where(h1, h2) { line-height: .98; }
 main :where(h3) { line-height: 1.08; }

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import {RouterProvider} from "react-router";
 import '@fontsource-variable/manrope';
 import '@fontsource-variable/playfair-display';
+import '@fontsource-variable/plus-jakarta-sans';
 
 import {router} from "@/routes";
 import './index.css'
