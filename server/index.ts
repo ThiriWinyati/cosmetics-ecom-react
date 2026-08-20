@@ -8,6 +8,7 @@ import { productsRouter } from "./routes/products.js";
 import { publicRouter } from "./routes/public.js";
 import { customerRouter } from "./routes/customer.js";
 import { adminRouter } from "./routes/admin.js";
+import { ensureDatabaseSchema } from "./migrations.js";
 
 export const app = express();
 app.disable("x-powered-by");
@@ -34,12 +35,19 @@ const errorHandler: ErrorRequestHandler = (error, _request, response, _next) => 
 app.use(errorHandler);
 
 if (process.env.NODE_ENV !== "test") {
-  app.listen(config.port, "0.0.0.0", (error?: Error) => {
-    if (error) {
-      console.error(`Charm & Grace API could not start: ${error.message}`);
+  ensureDatabaseSchema()
+    .then(() => {
+      app.listen(config.port, "0.0.0.0", (error?: Error) => {
+        if (error) {
+          console.error(`Charm & Grace API could not start: ${error.message}`);
+          process.exitCode = 1;
+          return;
+        }
+        console.log(`Charm & Grace listening on port ${config.port}`);
+      });
+    })
+    .catch((error) => {
+      console.error("Database schema migration failed", error);
       process.exitCode = 1;
-      return;
-    }
-    console.log(`Charm & Grace listening on port ${config.port}`);
-  });
+    });
 }
