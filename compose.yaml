@@ -1,0 +1,19 @@
+services:
+  database:
+    image: mariadb:10.11
+    environment:
+      MARIADB_DATABASE: cosmetics_store
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "1"
+    ports:
+      - "3306:3306"
+    volumes:
+      - cosmetics-data:/var/lib/mysql
+      - ./server/database/cosmetics_store.sql:/docker-entrypoint-initdb.d/01-cosmetics-store.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  cosmetics-data:

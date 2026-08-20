@@ -1,0 +1,424 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html { background: #ffffff; }
+  body { transition: background-color 250ms ease, color 250ms ease; }
+  a:visited { color: inherit; }
+  html.dark { background: #0f0c14; }
+  html.dark body { background: #0f0c14; color: #f5f1f2; }
+}
+
+html.dark [data-slot="navigation-menu-link"][data-active="true"] {
+  background-color: rgba(196,181,253,.15) !important;
+  color: #ede9fe !important;
+}
+
+/* The storefront predates its theme switch and uses direct utility colours. These
+   mappings give every existing customer page a consistent dark palette while new
+   components can use Tailwind's dark: variant normally. */
+html.dark [class~="bg-white"],
+html.dark [class~="bg-white/90"],
+html.dark [class~="bg-white/80"],
+html.dark [class~="bg-white/70"],
+html.dark [class*="bg-[#faf"],
+html.dark [class*="bg-[#fcf"],
+html.dark [class*="bg-[#ead"],
+html.dark [class*="bg-[#f7f"] { background-color: #16121c; }
+html.dark [class~="bg-stone-50"],
+html.dark [class~="bg-stone-100"],
+html.dark [class~="bg-slate-50"],
+html.dark [class~="bg-slate-50/70"],
+html.dark [class~="bg-slate-50/60"],
+html.dark [class~="bg-slate-50/80"],
+html.dark [class~="bg-slate-100"] { background-color: #242024; }
+html.dark [class~="bg-slate-200"],
+html.dark [class~="bg-slate-300"] { background-color: #373037; }
+html.dark [class~="bg-violet-50"] { background-color: #351c27; }
+html.dark [class~="bg-violet-50"],
+html.dark [class~="bg-violet-100"] { background-color: #472333; }
+html.dark [class~="bg-emerald-50"] { background-color: #102c25; }
+html.dark [class~="bg-amber-50"] { background-color: #332711; }
+html.dark [class~="bg-blue-50"] { background-color: #14263d; }
+html.dark [class~="text-slate-950"],
+html.dark [class~="text-slate-900"],
+html.dark [class~="text-slate-800"],
+html.dark [class~="text-slate-700"] { color: #f5f1f2; }
+html.dark [class~="text-slate-600"],
+html.dark [class~="text-slate-500"] { color: #bbb2b7; }
+html.dark [class~="text-slate-400"],
+html.dark [class~="text-slate-300"] { color: #9f949a; }
+html.dark [class~="text-violet-700"],
+html.dark [class~="text-violet-600"],
+html.dark [class~="text-violet-500"] { color: #fda4bf; }
+html.dark [class~="text-emerald-700"],
+html.dark [class~="text-emerald-600"] { color: #6ee7b7; }
+html.dark [class~="text-amber-700"],
+html.dark [class~="text-amber-600"] { color: #fcd34d; }
+html.dark [class~="text-blue-700"] { color: #93c5fd; }
+html.dark [class~="border-slate-100"],
+html.dark [class~="border-slate-200"],
+html.dark [class~="border-slate-300"],
+html.dark [class~="border-black/5"] { border-color: #373037; }
+html.dark [class~="border-slate-50"],
+html.dark [class~="border-slate-200/80"],
+html.dark [class~="border-slate-900/10"] { border-color: #332d33; }
+html.dark [class~="border-violet-50"],
+html.dark [class~="border-violet-100"] { border-color: #633147; }
+html.dark [class~="border-emerald-100"] { border-color: #205b49; }
+html.dark [class~="hover:bg-slate-100"]:hover,
+html.dark [class~="hover:bg-slate-50"]:hover,
+html.dark [class~="hover:bg-slate-50/60"]:hover { background-color: #302a30; }
+html.dark [class~="hover:bg-violet-50"]:hover { background-color: #42202e; }
+html.dark input,
+html.dark textarea,
+html.dark select { color: #f5f1f2; border-color: #403740; background-color: #1d1924; }
+html.dark input::placeholder,
+html.dark textarea::placeholder { color: #786e73; }
+html.dark [class~="ring-slate-100"],
+html.dark [class~="ring-slate-300"],
+html.dark [class~="ring-slate-400"] { --tw-ring-color: #504650; }
+html.dark [class~="ring-violet-50"] { --tw-ring-color: #54283b; }
+html.dark table { color: #e8e1e4; }
+html.dark option { background-color: #1d1924; color: #f5f1f2; }
+html.dark ::-webkit-scrollbar-track { background: #16121c; }
+html.dark ::-webkit-scrollbar-thumb { background: #4a4147; border-radius: 999px; }
+html.dark #reviews { background-color: #16121c !important; }
+
+/* Status messaging stays semantic even though the storefront brand accent is purple. */
+[role="alert"] {
+  border-color: #fecaca !important;
+  background-color: #fef2f2 !important;
+  color: #b91c1c !important;
+}
+html.dark [role="alert"] {
+  border-color: rgba(248,113,113,.28) !important;
+  background-color: rgba(127,29,29,.28) !important;
+  color: #fca5a5 !important;
+}
+
+/* Light lavender primary controls use deep aubergine text for accessible contrast. */
+[class~="bg-violet-400"][class~="text-white"] {
+  color: #21132f;
+}
+html.dark #reviews > div {
+  background-color: #17131d;
+  border-color: rgba(255,255,255,.1);
+  box-shadow: 0 30px 80px -48px rgba(0,0,0,.85);
+}
+html.dark #reviews > div > div:nth-child(2) {
+  background-image: linear-gradient(135deg, #241738, #1e1925);
+  border: 1px solid rgba(255,255,255,.08);
+}
+html.dark #reviews > div > div:nth-child(2) > div {
+  border-color: rgba(255,255,255,.1);
+}
+html.dark #reviews > div > div:nth-child(2) [class~="bg-white"] {
+  background-color: rgba(255,255,255,.1);
+}
+html.dark #reviews > div > div[class~="border-y"] {
+  margin-top: 2rem;
+  padding: 2rem;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 1.5rem;
+  background-color: rgba(255,255,255,.035);
+}
+html.dark #reviews select,
+html.dark #reviews textarea {
+  background-color: rgba(255,255,255,.05);
+  border-color: rgba(255,255,255,.1);
+  color: #e8e1e4;
+}
+html.dark #reviews article {
+  background-color: #1d1924;
+  border-color: rgba(255,255,255,.1);
+  box-shadow: none;
+}
+html.dark #reviews article:hover {
+  border-color: rgba(196,181,253,.35);
+  box-shadow: 0 20px 45px -35px rgba(0,0,0,.9);
+}
+html.dark #reviews article > div:first-child {
+  background-image: linear-gradient(135deg, rgba(136,19,55,.55), rgba(59,7,100,.35));
+  color: #ddd6fe;
+}
+html.dark #reviews article > div:first-child > span {
+  background-color: #a78bfa;
+  --tw-ring-color: #1d1924;
+}
+html.dark #reviews button[class~="bg-white"] {
+  background-color: rgba(255,255,255,.06);
+  border-color: rgba(255,255,255,.12);
+  color: #d6cdd1;
+}
+
+/* Product catalogue: preserve clear depth between the page, controls, filters and
+   product imagery instead of converting every light surface to one dark colour. */
+html.dark .products-catalogue > header {
+  background-image: linear-gradient(to bottom, rgba(76,29,149,.52), #0f0c14);
+  border-color: rgba(255,255,255,.08);
+}
+html.dark .products-catalogue aside,
+html.dark .products-catalogue section > div[class~="bg-white"] {
+  background-color: #17131d;
+  border-color: rgba(255,255,255,.1);
+}
+html.dark .products-catalogue aside > div[class~="bg-white"],
+html.dark .products-catalogue aside div[class~="sticky"] {
+  background-color: #1d191d;
+  border-color: rgba(255,255,255,.08);
+}
+html.dark .products-catalogue aside button[class~="bg-slate-950"],
+html.dark .products-catalogue nav button[aria-current="page"] {
+  background-color: #a78bfa;
+  color: white;
+  border-color: #a78bfa;
+}
+html.dark .products-catalogue aside button:not([class~="bg-slate-950"]):hover {
+  background-color: rgba(255,255,255,.07);
+  color: #fff;
+}
+html.dark .products-catalogue nav {
+  border-color: rgba(255,255,255,.1);
+}
+html.dark .products-catalogue nav button {
+  background-color: #17131d;
+  border-color: rgba(255,255,255,.12);
+  color: #d6cdd1;
+}
+html.dark .products-catalogue nav button:hover:not(:disabled) {
+  border-color: rgba(196,181,253,.6);
+  color: #ddd6fe;
+}
+
+/* Customer profile: distinct cards and form surfaces with softer plum accents. */
+html.dark .profile-page section[class~="bg-white"],
+html.dark .profile-page form[class~="bg-white"] {
+  background-color: #17131d;
+  border-color: rgba(255,255,255,.1);
+}
+html.dark .profile-page dl > div {
+  background-color: rgba(255,255,255,.045);
+  border-color: rgba(255,255,255,.08);
+}
+html.dark .profile-page aside[class*="bg-gradient"] {
+  background-image: linear-gradient(135deg, #2b1821, #1c181b);
+  border: 1px solid rgba(196,181,253,.15);
+}
+html.dark .profile-page aside[class*="bg-gradient"] > span {
+  background-color: rgba(196,181,253,.12);
+  color: #ddd6fe;
+}
+html.dark .profile-page aside[class*="bg-gradient"] a {
+  border-color: rgba(255,255,255,.1);
+}
+html.dark .profile-page input {
+  background-color: rgba(255,255,255,.05);
+  border-color: rgba(255,255,255,.1);
+  color: #f5f1f2;
+}
+html.dark .profile-page input:focus {
+  background-color: rgba(255,255,255,.08);
+  border-color: rgba(196,181,253,.5);
+}
+
+/* Wishlist collection: editorial card depth and a calmer, more deliberate grid. */
+main:has(> div > header[class*="bg-[#27173d]"]) {
+  background-image: radial-gradient(circle at 80% 12%, rgba(167,139,250,.055), transparent 28%);
+}
+main:has(> div > header[class*="bg-[#27173d]"]) > div > div[class~="mt-8"][class~="flex"] {
+  padding: .85rem 1rem;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 1rem;
+  background: rgba(255,255,255,.72);
+  backdrop-filter: blur(12px);
+}
+main:has(> div > header[class*="bg-[#27173d]"]) section article {
+  border-color: rgba(226,232,240,.9);
+  box-shadow: 0 18px 55px -48px rgba(15,23,42,.38);
+}
+main:has(> div > header[class*="bg-[#27173d]"]) section article > div:first-child {
+  background-image: radial-gradient(circle at 50% 38%, #fff, #f7f4f2 72%);
+}
+main:has(> div > header[class*="bg-[#27173d]"]) section article > div:last-child > div:last-child button {
+  min-width: 7.5rem;
+  justify-content: center;
+  box-shadow: 0 10px 24px -16px rgba(15,23,42,.75);
+}
+html.dark main:has(> div > header[class*="bg-[#27173d]"]) {
+  background-image: radial-gradient(circle at 80% 10%, rgba(167,139,250,.09), transparent 30%);
+}
+html.dark main:has(> div > header[class*="bg-[#27173d]"]) > div > div[class~="mt-8"][class~="flex"] {
+  border-color: rgba(255,255,255,.09);
+  background: rgba(33,29,33,.78);
+}
+html.dark main:has(> div > header[class*="bg-[#27173d]"]) section article {
+  background-color: #17131d;
+  border-color: rgba(255,255,255,.1);
+  box-shadow: 0 22px 55px -42px rgba(0,0,0,.9);
+}
+html.dark main:has(> div > header[class*="bg-[#27173d]"]) section article:hover {
+  border-color: rgba(196,181,253,.35);
+  box-shadow: 0 28px 65px -40px rgba(0,0,0,.95);
+}
+html.dark main:has(> div > header[class*="bg-[#27173d]"]) section article > div:first-child {
+  background-image: radial-gradient(circle at 50% 38%, #292329, #17131d 76%);
+}
+html.dark main:has(> div > header[class*="bg-[#27173d]"]) section article > div:last-child > div:last-child button {
+  background-color: #a78bfa;
+}
+html.dark main:has(> div > header[class*="bg-[#27173d]"]) section article > div:last-child > div:last-child button:hover {
+  background-color: #c4b5fd;
+}
+
+@keyframes hero-reveal {
+  from { opacity: 0; transform: scale(1.08); }
+  to { opacity: 1; transform: scale(1.02); }
+}
+
+@keyframes hero-copy {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cart-sheet-in {
+  from { opacity: 0; transform: translateX(28px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body :where(button, a, [class*="transition"]) {
+    transition-duration: 220ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .landing-reveal { opacity: 1 !important; transform: none !important; }
+}
+
+@layer components {
+  .landing-button {
+    @apply relative inline-flex h-12 items-center justify-center gap-3 overflow-hidden rounded-full px-7 text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+    box-shadow: 0 0 0 rgba(15, 23, 42, 0);
+  }
+
+  .landing-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -16px rgba(15, 23, 42, 0.65);
+  }
+
+  .landing-button:active { transform: translateY(0) scale(.98); }
+  .landing-arrow { transition: transform 300ms cubic-bezier(.2,.8,.2,1); }
+  .landing-button:hover .landing-arrow { transform: translateX(4px); }
+
+  .landing-reveal {
+    opacity: 0;
+    transform: translateY(var(--reveal-distance, 28px));
+    transition: opacity 550ms cubic-bezier(.22,1,.36,1) var(--reveal-delay, 0ms), transform 550ms cubic-bezier(.22,1,.36,1) var(--reveal-delay, 0ms);
+  }
+
+  .landing-reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  .admin-primary {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 text-sm font-semibold text-white shadow-md shadow-slate-950/10 transition-all duration-200 hover:-translate-y-0.5 hover:bg-violet-400 dark:bg-violet-400 dark:hover:bg-violet-300;
+  }
+
+  .admin-secondary {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-stone-100 dark:hover:bg-white/10;
+  }
+
+  .admin-icon {
+    @apply inline-grid size-9 place-items-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-950 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-white;
+  }
+
+  .admin-shell main > div > div > div[class*="rounded-2xl"][class*="border"] {
+    @apply overflow-hidden rounded-3xl border-slate-200/80 shadow-[0_18px_55px_-45px_rgba(15,23,42,.35)] dark:border-white/8;
+  }
+
+  .admin-shell table thead {
+    @apply bg-slate-50/80 text-[10px] font-semibold uppercase tracking-wider dark:bg-white/4;
+  }
+
+  .admin-shell table tbody tr {
+    @apply transition-colors hover:bg-slate-50/70 dark:hover:bg-white/4;
+  }
+
+  .admin-shell main input,
+  .admin-shell main textarea,
+  .admin-shell main select {
+    @apply transition focus:border-violet-200 focus:ring-4 focus:ring-violet-50/60 dark:focus:border-violet-300/50 dark:focus:ring-violet-300/10;
+  }
+}
+
+/* Product detail gallery: keep the imagery beside the buying controls, then let it
+   stop naturally when the following Description section reaches the viewport. */
+div[class~="lg:grid-cols-[1.05fr_0.95fr]"] > section:nth-child(2) > p.mt-5.line-clamp-3 {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  div.bg-white > div[class~="max-w-7xl"][class~="lg:py-14"] {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    column-gap: 4rem;
+  }
+
+  div.bg-white > div[class~="max-w-7xl"][class~="lg:py-14"] > div:first-child {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  div.bg-white > div[class~="max-w-7xl"][class~="lg:py-14"] > div[class~="lg:grid-cols-[1.05fr_0.95fr]"] {
+    display: contents;
+  }
+
+  div[class~="lg:grid-cols-[1.05fr_0.95fr]"] > section:first-child {
+    grid-column: 1;
+    grid-row: 2 / 4;
+    position: sticky;
+    top: 7rem;
+    z-index: 1;
+    align-self: start;
+  }
+
+  div[class~="lg:grid-cols-[1.05fr_0.95fr]"] > section:nth-child(2) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  div[class~="lg:grid-cols-[1.05fr_0.95fr]"] > section:first-child > div:first-child {
+    max-height: calc(100vh - 12rem);
+  }
+
+  div.bg-white > div[class~="max-w-7xl"][class~="lg:py-14"] > #description {
+    grid-column: 2;
+    grid-row: 3;
+    margin-left: 0;
+  }
+
+  div.bg-white > div[class~="max-w-7xl"][class~="lg:py-14"] > #reviews {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    position: relative;
+    z-index: 2;
+    background: white;
+  }
+
+  div.bg-white > div[class~="max-w-7xl"][class~="lg:py-14"] > #reviews + section {
+    grid-column: 1 / -1;
+    grid-row: 5;
+  }
+}
