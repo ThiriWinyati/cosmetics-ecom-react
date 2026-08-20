@@ -21,6 +21,11 @@ export default function ProductCard({ product }: { product: Product }) {
           <Heart className={`size-4 ${saved ? "fill-current" : ""}`} />
         </button>
         {product.latest && <span className="absolute left-3 top-3 rounded-full bg-slate-950 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">New</span>}
+        <div className="absolute inset-x-3 bottom-3 translate-y-0 opacity-100 transition-all duration-300 ease-out md:translate-y-3 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-focus-within:translate-y-0 md:group-focus-within:opacity-100">
+          <button type="button" onClick={addToCart} disabled={adding} className="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-slate-950 px-5 text-xs font-semibold text-white shadow-[0_12px_30px_-12px_rgba(15,23,42,.65)] transition hover:bg-violet-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300 focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-70 dark:bg-violet-300 dark:text-violet-950 dark:hover:bg-violet-200">
+            <ShoppingBag className="size-3.5" /> {adding ? "Adding…" : "Add to cart"}
+          </button>
+        </div>
       </div>
       <div className="px-1 pt-4">
         <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">{product.brand} · {product.category}</p>
@@ -28,9 +33,8 @@ export default function ProductCard({ product }: { product: Product }) {
           <Link to={`/products/${product.id}`} className="font-semibold tracking-tight hover:underline">{product.name}</Link>
           <span className="font-semibold">£{product.price.toFixed(2)}</span>
         </div>
-        <div className="mt-2 flex items-center justify-between text-xs text-slate-500">
+        <div className="mt-2 flex items-center text-xs text-slate-500">
           <span className="flex items-center gap-1"><Star className="size-3.5 fill-amber-400 text-amber-400" /> {product.rating} ({product.reviews})</span>
-          <button type="button" onClick={addToCart} disabled={adding} className="flex items-center gap-1 font-medium text-slate-800 hover:text-violet-400 disabled:opacity-50"><ShoppingBag className="size-3.5" /> {adding ? "Adding…" : "Add"}</button>
         </div>
       </div>
     </article>

@@ -15,5 +15,7 @@ publicRouter.post("/newsletter", async (request, response) => {
   const [result] = await db.execute("INSERT IGNORE INTO newsletter_subscribers (email) VALUES (?)", [email]);
   await db.execute("INSERT INTO coupons (Coupon_Code, Discount_Percentage, Valid_From, Valid_To, Minimum_Purchase_Amount) VALUES ('WELCOME10', 10, NOW(), DATE_ADD(NOW(), INTERVAL 10 YEAR), 0) ON DUPLICATE KEY UPDATE Discount_Percentage=10, Valid_To=DATE_ADD(NOW(), INTERVAL 10 YEAR), Minimum_Purchase_Amount=0");
   const subscribed = (result as { affectedRows: number }).affectedRows > 0;
-  response.status(subscribed ? 201 : 200).json({ message: subscribed ? "You’re on the list!" : "You’re already subscribed.", code: "WELCOME10" });
+  response.status(subscribed ? 201 : 200).json(subscribed
+    ? { message: "You’re on the list!", code: "WELCOME10", alreadySubscribed: false }
+    : { message: "You’re already subscribed. Your welcome offer was issued when you first joined.", alreadySubscribed: true });
 });

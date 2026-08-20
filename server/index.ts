@@ -1,5 +1,6 @@
 import express, { type ErrorRequestHandler } from "express";
 import cors from "cors";
+import path from "node:path";
 import { config } from "./config.js";
 import { db } from "./db.js";
 import { authRouter } from "./routes/auth.js";
@@ -18,7 +19,13 @@ app.use("/api/products", productsRouter);
 app.use("/api", publicRouter);
 app.use("/api/customer", customerRouter);
 app.use("/api/admin", adminRouter);
-app.use((_request, response) => response.status(404).json({ message: "API endpoint not found" }));
+app.use("/api", (_request, response) => response.status(404).json({ message: "API endpoint not found" }));
+
+if (process.env.NODE_ENV === "production") {
+  const clientDirectory = path.resolve(process.cwd(), "dist");
+  app.use(express.static(clientDirectory));
+  app.get(/^(?!\/api(?:\/|$)).*/, (_request, response) => response.sendFile(path.join(clientDirectory, "index.html")));
+}
 
 const errorHandler: ErrorRequestHandler = (error, _request, response, _next) => {
   console.error(error);
@@ -27,12 +34,12 @@ const errorHandler: ErrorRequestHandler = (error, _request, response, _next) => 
 app.use(errorHandler);
 
 if (process.env.NODE_ENV !== "test") {
-  app.listen(config.port, "127.0.0.1", (error?: Error) => {
+  app.listen(config.port, "0.0.0.0", (error?: Error) => {
     if (error) {
       console.error(`Charm & Grace API could not start: ${error.message}`);
       process.exitCode = 1;
       return;
     }
-    console.log(`Charm & Grace API listening on http://localhost:${config.port}`);
+    console.log(`Charm & Grace listening on port ${config.port}`);
   });
 }

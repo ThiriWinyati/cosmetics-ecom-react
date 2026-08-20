@@ -34,7 +34,7 @@ export default function AdminLogin() {
     } finally { setLoading(false); }
   };
 
-  return <main className="relative min-h-screen overflow-hidden bg-[#f7f5fa] text-slate-950 transition-colors dark:bg-[#0d0a11] dark:text-stone-100">
+  return <main className="admin-login relative min-h-screen overflow-hidden bg-[#f7f5fa] text-slate-950 transition-colors dark:bg-[#0d0a11] dark:text-stone-100">
     <div className="absolute -left-32 -top-40 size-[32rem] rounded-full bg-violet-200/25 blur-3xl dark:bg-violet-700/10" />
     <div className="absolute -bottom-48 right-0 size-[34rem] rounded-full bg-violet-100/50 blur-3xl dark:bg-violet-500/8" />
     <button type="button" onClick={() => setDarkMode((current) => !current)} aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"} title={darkMode ? "Light mode" : "Dark mode"} className="absolute right-5 top-5 z-20 grid size-11 place-items-center rounded-full border border-slate-200/80 bg-white/80 text-slate-600 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-stone-300 dark:hover:bg-white/10">{darkMode ? <Sun className="size-4.5" /> : <Moon className="size-4.5" />}</button>

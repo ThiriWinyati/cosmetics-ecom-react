@@ -15,6 +15,8 @@ import AdminLogin from "@/components/admin/AdminLogin";
 import AdminChat from "@/components/admin/AdminChat";
 import AdminMessages from "@/components/admin/AdminMessages";
 import EditorsPicks from "@/components/pages/EditorsPicks";
+import Blog from "@/components/pages/Blog/Blog";
+import BlogDetail from "@/components/pages/Blog/BlogDetail";
 
 export const router = createBrowserRouter([
   {
@@ -26,7 +28,8 @@ export const router = createBrowserRouter([
       { path: "editors-picks", Component: EditorsPicks },
       { path: "products", Component: ProductRootLayout, children: [{ index: true, Component: Product }, { path: ":productId", Component: ProductDetail }] },
       { path: "services", element: <InfoPage type="shipping" /> },
-      { path: "blogs", element: <InfoPage type="faq" /> },
+      { path: "blogs", Component: Blog },
+      { path: "blogs/:blogId", Component: BlogDetail },
       { path: "faq", element: <InfoPage type="faq" /> },
       { path: "contact", Component: Contact },
       { path: "shipping-returns", element: <InfoPage type="shipping" /> },

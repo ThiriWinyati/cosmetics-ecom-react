@@ -235,7 +235,7 @@ function Brand() {
                 alt=""
                 className="size-11 object-contain transition-transform duration-300 group-hover:scale-105 sm:size-12"
             />
-            <span className="text-base font-semibold tracking-[-0.02em] sm:text-lg">
+            <span className="[font-family:var(--font-editorial)] text-lg font-semibold tracking-[-0.035em] sm:text-xl">
                 {siteConfig.name}
             </span>
             <span className="sr-only">Home</span>
@@ -274,7 +274,7 @@ function DesktopMenu({ item }: { item?: MainNavItem }) {
             <NavigationMenuList className="gap-1">
                 {item?.card && (
                     <NavigationMenuItem>
-                        <NavigationMenuTrigger className="h-9 rounded-full bg-transparent px-4 text-sm font-medium hover:bg-slate-100 focus:bg-slate-100 data-[state=open]:bg-violet-50 data-[state=open]:text-violet-600 dark:text-stone-200 dark:hover:bg-white/8 dark:focus:bg-white/8 dark:data-[state=open]:bg-violet-300/15 dark:data-[state=open]:text-violet-100">
+                        <NavigationMenuTrigger className="relative h-9 rounded-none bg-transparent px-4 [font-family:var(--font-editorial)] text-[15px] font-semibold tracking-[-0.015em] after:absolute after:bottom-0 after:left-4 after:right-4 after:h-px after:origin-center after:scale-x-0 after:bg-violet-400 after:transition-transform after:duration-300 hover:bg-transparent hover:text-violet-500 hover:after:scale-x-100 focus:bg-transparent data-[state=open]:bg-transparent data-[state=open]:text-violet-600 data-[state=open]:after:scale-x-100 dark:text-stone-200 dark:hover:bg-transparent dark:hover:text-violet-200 dark:focus:bg-transparent dark:data-[state=open]:bg-transparent dark:data-[state=open]:text-violet-100">
                             {item.title}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent className="overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white shadow-[0_30px_90px_rgba(15,23,42,0.2)] dark:border-white/10 dark:bg-[#1b1622] dark:shadow-[0_35px_100px_rgba(0,0,0,.55)]">
@@ -294,7 +294,7 @@ function DesktopMenu({ item }: { item?: MainNavItem }) {
                                     <p className="relative mt-3 max-w-38 text-xs leading-5 text-white/65">A complete look, thoughtfully selected by us.</p>
                                     <span className="relative mt-6 inline-flex items-center gap-1.5 text-xs font-semibold">View <ArrowUpRight className="size-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></span>
                                 </Link>
-                            <ul className="grid grid-cols-2 gap-3">
+                            <ul className="grid grid-cols-2 gap-x-3 gap-y-1">
                                 {item.card.map((cardItem) => (
                                     <ListItem
                                         key={cardItem.title}
@@ -312,7 +312,7 @@ function DesktopMenu({ item }: { item?: MainNavItem }) {
                 {item?.menu?.map((menuItem) => (
                     <NavigationMenuItem key={menuItem.title}>
                         <NavigationMenuLink
-                            className={`${navigationMenuTriggerStyle()} h-9 rounded-full px-4 text-sm font-medium transition-colors ${location.pathname === String(menuItem.href) ? "!bg-violet-50 !text-violet-500 dark:!bg-violet-300/15 dark:!text-violet-100" : "bg-transparent hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-white/8 dark:focus:bg-white/8"}`}
+                            className={`${navigationMenuTriggerStyle()} relative h-9 rounded-none !bg-transparent px-4 [font-family:var(--font-editorial)] text-[15px] font-semibold tracking-[-0.015em] transition-colors after:absolute after:bottom-0 after:left-4 after:right-4 after:h-px after:origin-center after:bg-violet-400 after:transition-transform after:duration-300 hover:!bg-transparent hover:text-violet-500 hover:after:scale-x-100 focus:!bg-transparent dark:hover:!bg-transparent dark:hover:text-violet-200 dark:focus:!bg-transparent ${location.pathname === String(menuItem.href) ? "!text-violet-500 after:scale-x-100 dark:!text-violet-100" : "after:scale-x-0"}`}
                             render={<Link to={String(menuItem.href)}>{menuItem.title}</Link>}
                         />
                     </NavigationMenuItem>
@@ -355,18 +355,19 @@ function MobileMenu({
             <nav className="mt-5" aria-label="Mobile navigation">
                 {item?.card && (
                     <div>
-                        <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-widest text-slate-400">
+                        <p className="px-3 pb-2 [font-family:var(--font-editorial)] text-sm font-semibold tracking-[-0.01em] text-slate-500 dark:text-stone-400">
                             {item.title}
                         </p>
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-2 gap-x-2 gap-y-1">
                             {item.card.map((cardItem) => (
                                 <Link
                                     key={cardItem.title}
                                     to={String(cardItem.href)}
                                     onClick={onNavigate}
-                                    className="rounded-2xl border border-slate-100 bg-slate-50 p-4 text-sm font-medium transition-colors hover:border-violet-100 hover:bg-violet-50 dark:border-white/8 dark:bg-white/5 dark:hover:border-violet-300/25 dark:hover:bg-violet-300/10"
+                                    className="group flex min-h-14 items-center justify-between rounded-2xl bg-slate-50/70 px-4 py-3 text-sm font-medium transition-all duration-300 hover:bg-violet-50 hover:text-violet-600 dark:bg-white/[.045] dark:hover:bg-violet-300/10 dark:hover:text-violet-100"
                                 >
-                                    {cardItem.title}
+                                    <span className="[font-family:var(--font-editorial)] text-[15px] font-semibold tracking-[-0.015em]">{cardItem.title}</span>
+                                    <ArrowUpRight className="size-3.5 text-slate-300 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-violet-400 dark:text-stone-600" />
                                 </Link>
                             ))}
                         </div>
@@ -378,7 +379,7 @@ function MobileMenu({
                             key={menuItem.title}
                             to={String(menuItem.href)}
                             onClick={onNavigate}
-                            className="flex items-center justify-between rounded-xl px-3 py-3 text-sm font-medium hover:bg-slate-50"
+                            className="flex items-center justify-between rounded-xl px-3 py-3 [font-family:var(--font-editorial)] text-base font-semibold tracking-[-0.015em] hover:bg-slate-50 dark:hover:bg-white/5"
                         >
                             {menuItem.title}
                             <ArrowUpRight className="size-4 text-slate-400" />
@@ -412,16 +413,16 @@ function ListItem({
                 render={
                     <Link
                         to={href}
-                        className="group relative block min-h-29 overflow-hidden rounded-[1.2rem] border border-slate-200/80 bg-gradient-to-br from-white via-white to-slate-50/70 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_1px_3px_rgba(15,23,42,0.05)] ring-1 ring-inset ring-white transition-all duration-300 hover:-translate-y-0.5 hover:border-violet-200/80 hover:from-white hover:to-violet-50/70 hover:shadow-[0_12px_28px_rgba(124,58,237,0.1)] dark:border-white/10 dark:from-white/[.055] dark:via-white/[.04] dark:to-violet-300/[.035] dark:shadow-none dark:ring-white/5 dark:hover:border-violet-300/30 dark:hover:from-violet-300/10 dark:hover:to-white/5"
+                        className="group relative block min-h-29 overflow-hidden rounded-[1.2rem] bg-transparent p-4 transition-all duration-300 hover:bg-violet-50/75 dark:hover:bg-violet-300/[.08]"
                     >
-                        <span className="absolute inset-y-4 left-0 w-0.5 rounded-full bg-gradient-to-b from-transparent via-violet-200 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                        <span className="absolute -right-8 -top-8 size-20 rounded-full bg-violet-100/70 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100 dark:bg-violet-300/15" />
                         <div className="block">
-                            <div className="flex items-center justify-between text-sm font-semibold text-slate-950 dark:text-stone-100">
-                                <span>{title}</span>
+                            <div className="relative flex items-center justify-between text-sm font-semibold text-slate-950 dark:text-stone-100">
+                                <span className="[font-family:var(--font-editorial)] text-[15px] tracking-[-0.015em]">{title}</span>
                                 <ArrowUpRight className="size-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-violet-400" />
                             </div>
                             {children && (
-                                <p className="mt-2 block text-xs leading-5 text-slate-500 dark:text-stone-400">{children}</p>
+                                <p className="relative mt-2 block max-w-52 text-xs leading-5 text-slate-500 dark:text-stone-400">{children}</p>
                             )}
                         </div>
                     </Link>

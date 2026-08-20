@@ -16,11 +16,10 @@ export default function Home() {
             <p className="mb-6 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-white/75"><Sparkles className="size-3.5 text-violet-100" /> Charm & Grace · New season</p>
             <h1 className="text-5xl font-semibold leading-[0.98] tracking-[-0.05em] sm:text-7xl">Beauty that feels like you.</h1>
             <p className="mt-6 max-w-md text-base leading-7 text-white/85">Curated makeup essentials, expressive colour and skin-loving formulas for every version of you.</p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link to="/products" className="landing-button group bg-white text-slate-950 hover:bg-violet-50 focus-visible:ring-white">Shop collection <ArrowRight className="landing-arrow size-4" /></Link>
-              <Link to="/about" className="landing-button group border border-white/45 text-white hover:border-white hover:bg-white hover:text-slate-950">Our story <ArrowRight className="landing-arrow -ml-6 size-4 opacity-0 group-hover:ml-0 group-hover:opacity-100" /></Link>
+            <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-3">
+              <Link to="/products" className="group relative inline-flex h-11 items-center gap-3 px-1 text-sm font-semibold text-white outline-none after:absolute after:bottom-1 after:left-1 after:right-1 after:h-px after:origin-left after:scale-x-0 after:bg-white after:transition-transform after:duration-300 hover:after:scale-x-100 focus-visible:after:scale-x-100">Shop collection <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1.5 group-focus-visible:translate-x-1.5" /></Link>
+              <Link to="/about" className="group relative inline-flex h-11 items-center gap-3 px-1 text-sm font-medium text-white/70 outline-none transition-colors hover:text-white focus-visible:text-white after:absolute after:bottom-1 after:left-1 after:right-1 after:h-px after:origin-right after:scale-x-0 after:bg-white/70 after:transition-transform after:duration-300 hover:after:scale-x-100 focus-visible:after:scale-x-100">Our story <ArrowRight className="size-4 -rotate-45 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-focus-visible:translate-x-1 group-focus-visible:-translate-y-1" /></Link>
             </div>
-            <div className="mt-10 flex items-center gap-3 text-xs text-white/60"><span className="flex -space-x-2">{["A", "M", "S"].map((letter) => <span key={letter} className="grid size-8 place-items-center rounded-full border-2 border-[#3b202d] bg-violet-50 text-[10px] font-semibold text-violet-600">{letter}</span>)}</span><span><strong className="block text-white">Loved by beauty enthusiasts</strong>Curated with care, worn with confidence</span></div>
           </div>
         </div>
       </section>

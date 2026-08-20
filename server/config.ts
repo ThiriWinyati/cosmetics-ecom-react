@@ -1,7 +1,7 @@
 import "dotenv/config";
 
 export const config = {
-  port: Number(process.env.API_PORT ?? 4000),
+  port: Number(process.env.PORT ?? process.env.API_PORT ?? 4000),
   clientOrigin: process.env.CLIENT_ORIGIN ?? "http://localhost:5173",
   jwtSecret: process.env.JWT_SECRET ?? "change-this-secret-before-production",
   googleClientId: process.env.GOOGLE_CLIENT_ID ?? "",
