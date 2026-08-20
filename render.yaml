@@ -26,8 +26,6 @@ services:
         value: defaultdb
       - key: DB_SSL
         value: "true"
-      - key: DB_SSL_REJECT_UNAUTHORIZED
-        value: "false"
       - key: GOOGLE_CLIENT_ID
         sync: false
       - key: VITE_GOOGLE_CLIENT_ID
