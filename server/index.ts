@@ -12,6 +12,10 @@ import { ensureDatabaseSchema } from "./migrations.js";
 
 export const app = express();
 app.disable("x-powered-by");
+app.use((_request, response, next) => {
+  response.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  next();
+});
 app.use(cors({ origin: config.clientOrigin }));
 app.use(express.json({ limit: "2mb" }));
 app.get("/api/health", async (_request, response) => { await db.query("SELECT 1"); response.json({ status: "ok", database: "connected" }); });
