@@ -63,6 +63,16 @@ main :where(h3) { line-height: 1.08; }
   line-height: 1;
 }
 
+@media print {
+  body { background: #fff !important; }
+  body > #root > div > header,
+  body > #root > div > footer,
+  .receipt-actions { display: none !important; }
+  .receipt-page { min-height: 0 !important; padding: 0 !important; background: #fff !important; }
+  .receipt-document { max-width: none !important; border-radius: 0 !important; box-shadow: none !important; }
+  @page { size: A4; margin: 12mm; }
+}
+
 html.dark [data-slot="navigation-menu-link"][data-active="true"] {
   background-color: rgba(196,181,253,.15) !important;
   color: #ede9fe !important;

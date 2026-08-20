@@ -9,6 +9,7 @@ export const authRouter = Router();
 const googleClient = new OAuth2Client();
 
 const verifyPassword = (password: string, hash: string) => bcrypt.compare(password, hash.replace(/^\$2y\$/, "$2b$"));
+const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s]).{8,128}$/;
 
 authRouter.post("/customer/register", async (request, response) => {
   const name = String(request.body.name ?? "").trim();
@@ -17,7 +18,7 @@ authRouter.post("/customer/register", async (request, response) => {
   const { phone = "", address = "" } = request.body;
   if (!name || !email || !password) return response.status(400).json({ message: "Name, email and password are required" });
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return response.status(400).json({ message: "Please enter a valid email address" });
-  if (password.length < 8) return response.status(400).json({ message: "Password must contain at least 8 characters" });
+  if (!strongPassword.test(password)) return response.status(400).json({ message: "Password must be 8–128 characters and include uppercase, lowercase, a number and a special character" });
   const [existing] = await db.query("SELECT Customer_ID FROM customers WHERE Email = ?", [email]);
   if (Array.isArray(existing) && existing.length) return response.status(409).json({ message: "Email is already registered" });
   const hash = await bcrypt.hash(password, 12);

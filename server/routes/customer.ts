@@ -16,8 +16,8 @@ customerRouter.post("/wishlist", async (request: AuthRequest, response) => { con
 customerRouter.delete("/wishlist/:id", async (request: AuthRequest, response) => { await db.execute("DELETE FROM favourites WHERE FavouritesID=? AND Customer_ID=?", [request.params.id, request.user!.id]); response.status(204).end(); });
 customerRouter.get("/orders", async (request: AuthRequest, response) => {
   const [rows] = await db.query(`SELECT o.Order_ID id, o.Order_Date date, o.Status status, o.Shipping_Address address,
-    o.Total_Price total, o.Phone phone, cp.Coupon_Code coupon, pm.Method_Name payment,
-    sm.Shipping_Method shippingMethod, s.Shipping_Status shippingStatus,
+    o.Total_Price total, o.Phone phone, cp.Coupon_Code coupon, cp.Discount_Percentage discountPercentage, pm.Method_Name payment,
+    sm.Shipping_Method shippingMethod, sm.Cost deliveryCost, s.Shipping_Status shippingStatus,
     GROUP_CONCAT(p.Product_ID ORDER BY oi.Order_Item_ID SEPARATOR '|||') productIds,
     GROUP_CONCAT(p.Name ORDER BY oi.Order_Item_ID SEPARATOR '|||') productNames,
     GROUP_CONCAT(REPLACE(p.Image_Path, '../', '/') ORDER BY oi.Order_Item_ID SEPARATOR '|||') productImages,
@@ -31,7 +31,7 @@ customerRouter.get("/orders", async (request: AuthRequest, response) => {
     LEFT JOIN order_items oi ON oi.Order_ID=o.Order_ID
     LEFT JOIN products p ON p.Product_ID=oi.Product_ID
     WHERE o.Customer_ID=?
-    GROUP BY o.Order_ID, o.Order_Date, o.Status, o.Shipping_Address, o.Total_Price, o.Phone, cp.Coupon_Code, pm.Method_Name, sm.Shipping_Method, s.Shipping_Status
+    GROUP BY o.Order_ID, o.Order_Date, o.Status, o.Shipping_Address, o.Total_Price, o.Phone, cp.Coupon_Code, cp.Discount_Percentage, pm.Method_Name, sm.Shipping_Method, sm.Cost, s.Shipping_Status
     ORDER BY o.Order_Date DESC`, [request.user!.id]);
   const orders = (rows as Array<Record<string, unknown>>).map((order) => {
     const split = (value: unknown) => value ? String(value).split("|||") : [];

@@ -6,7 +6,7 @@ import ProductRootLayout from "@/components/pages/Products/ProductRootLayout";
 import Product from "@/components/pages/Products/Product";
 import ProductDetail from "@/components/pages/Products/ProductDetail";
 import { Contact, InfoPage } from "@/components/pages/InfoPage";
-import { AuthPage, CartPage, Checkout, CustomerOrders, Profile } from "@/components/pages/AccountPages";
+import { AuthPage, CartPage, Checkout, CustomerOrders, OrderReceipt, Profile } from "@/components/pages/AccountPages";
 import AdminLayout from "@/components/admin/AdminLayout";
 import AdminDashboard from "@/components/admin/AdminDashboard";
 import AdminResource from "@/components/admin/AdminResource";
@@ -40,6 +40,7 @@ export const router = createBrowserRouter([
       { path: "forgot-password", element: <AuthPage mode="forgot" /> },
       { path: "profile", Component: Profile },
       { path: "orders", Component: CustomerOrders },
+      { path: "orders/:orderId/receipt", Component: OrderReceipt },
       { path: "cart", Component: CartPage },
       { path: "wishlist", element: <CartPage wishlist /> },
       { path: "checkout", Component: Checkout },
