@@ -230,7 +230,7 @@ export function Profile() {
 
   return <main className="profile-page min-h-[calc(100vh-132px)] bg-[#faf9f8] dark:bg-black">
     <div className="mx-auto max-w-6xl px-6 py-10 lg:px-8 lg:py-16">
-      <header className="relative overflow-hidden rounded-[2rem] border border-violet-100/80 bg-gradient-to-br from-violet-50 via-white to-[#f7f3ff] px-7 py-9 shadow-[0_30px_80px_-60px_rgba(76,29,149,.5)] dark:border-white/10 dark:from-black dark:via-black dark:to-[#090909] sm:px-10 sm:py-12 lg:rounded-[2.5rem] lg:px-14">
+      <header className="profile-hero relative overflow-hidden rounded-[2rem] border border-violet-100/80 bg-gradient-to-br from-violet-50 via-white to-[#f7f3ff] px-7 py-9 shadow-[0_30px_80px_-60px_rgba(76,29,149,.5)] dark:border-white/10 dark:from-black dark:via-black dark:to-[#090909] sm:px-10 sm:py-12 lg:rounded-[2.5rem] lg:px-14">
         <div className="pointer-events-none absolute -right-16 -top-24 size-72 rounded-full border border-violet-200/40 bg-violet-100/55 blur-2xl dark:border-white/5 dark:bg-violet-400/10" />
         <div className="pointer-events-none absolute bottom-0 right-14 h-px w-1/3 bg-gradient-to-r from-transparent via-violet-300 to-transparent" />
         <div className="relative flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
@@ -241,7 +241,7 @@ export function Profile() {
 
       {notice && <p role="status" className={`mt-5 rounded-2xl border p-4 text-sm ${notice.includes("updated") ? "border-emerald-100 bg-emerald-50 text-emerald-700" : "border-violet-50 bg-violet-50 text-violet-600"}`}>{notice}</p>}
 
-      <nav className="mt-2 grid border-b border-violet-100 dark:border-white/10 sm:grid-cols-3" aria-label="Account shortcuts">
+      <nav className="profile-shortcuts mt-2 grid border-b border-violet-100 dark:border-white/10 sm:grid-cols-3" aria-label="Account shortcuts">
         <ProfileLink href="/orders" icon={<Package />} title="Orders" count={counts.orders} detail={counts.orders ? "View your order history" : "No orders yet"} />
         <ProfileLink href="/wishlist" icon={<Heart />} title="Wishlist" count={counts.wishlist} detail="Saved favourites" />
         <ProfileLink href="/cart" icon={<ShoppingBag />} title="Shopping bag" count={counts.bag} detail="Ready for checkout" />

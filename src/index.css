@@ -309,6 +309,46 @@ html.dark .profile-page input:focus {
   border-color: rgba(196,181,253,.5);
 }
 
+/* Profile dark mode: black canvas, neutral glass surfaces and restrained lavender light. */
+html.dark .profile-page .profile-hero {
+  background: radial-gradient(circle at 88% 12%, rgba(167,139,250,.16), transparent 34%),
+              linear-gradient(145deg, #0c0c0d, #030303 70%);
+  border-color: rgba(255,255,255,.13);
+  box-shadow: 0 32px 90px -58px rgba(167,139,250,.55), inset 0 1px rgba(255,255,255,.045);
+}
+html.dark .profile-page .profile-shortcuts {
+  margin-top: 1.25rem;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 1.5rem;
+  background: #080808;
+}
+html.dark .profile-page .profile-shortcuts > a {
+  padding-top: 1.35rem;
+  padding-bottom: 1.35rem;
+  border-color: rgba(255,255,255,.09);
+}
+html.dark .profile-page .profile-shortcuts > a:hover { background: #111; }
+html.dark .profile-page .profile-shortcuts + section dl {
+  border-color: rgba(255,255,255,.13);
+}
+html.dark .profile-page .profile-shortcuts + section dl > div {
+  background: transparent;
+  border-color: rgba(255,255,255,.09);
+}
+html.dark .profile-page .profile-shortcuts + section + aside {
+  margin-bottom: .5rem;
+  padding-inline: 1.25rem;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 1.25rem;
+  background: linear-gradient(90deg, #080808, #0d0d0f);
+}
+html.dark .profile-page form[class~="bg-white"] {
+  background-color: #090909;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 35px 100px rgba(0,0,0,.8);
+}
+
 /* Wishlist collection: editorial card depth and a calmer, more deliberate grid. */
 main:has(> div > header[class*="bg-[#27173d]"]) {
   background-image: radial-gradient(circle at 80% 12%, rgba(167,139,250,.055), transparent 28%);
