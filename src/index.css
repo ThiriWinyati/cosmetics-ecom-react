@@ -41,7 +41,11 @@
 
 nav, button, input, textarea, select, label { font-variation-settings: "wght" 520; }
 .customer-navigation nav,
-.customer-navigation nav *,
+.customer-navigation nav * {
+  font-family: var(--font-interface) !important;
+  font-variation-settings: "wght" 560;
+  letter-spacing: -.004em;
+}
 .admin-shell nav,
 .admin-shell nav * {
   font-family: var(--font-navigation) !important;
