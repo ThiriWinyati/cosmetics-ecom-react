@@ -103,7 +103,7 @@ export default function MainNavigation({
     }, [isCartOpen, loadCart]);
 
     return (
-        <div className="sticky top-0 z-50 border-b border-black/5 bg-white/90 text-slate-950 shadow-[0_1px_18px_rgba(15,23,42,0.04)] backdrop-blur-xl transition-colors dark:border-white/8 dark:bg-[#15111b]/92 dark:text-stone-100">
+        <div className="customer-navigation sticky top-0 z-50 border-b border-black/5 bg-white/90 text-slate-950 shadow-[0_1px_18px_rgba(15,23,42,0.04)] backdrop-blur-xl transition-colors dark:border-white/8 dark:bg-[#15111b]/92 dark:text-stone-100">
             <div className="mx-auto flex h-18 max-w-7xl items-center gap-6 px-4 sm:px-6 lg:h-20 lg:px-8">
                 <Brand />
 

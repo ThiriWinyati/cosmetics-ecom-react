@@ -2,9 +2,24 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --color-violet-50: #fff1f5;
+  --color-violet-100: #ffe4ec;
+  --color-violet-200: #fecddc;
+  --color-violet-300: #fda4c0;
+  --color-violet-400: #f472a0;
+  --color-violet-500: #e94f87;
+  --color-violet-600: #d83470;
+  --color-violet-700: #b9235b;
+  --color-violet-800: #991f4e;
+  --color-violet-900: #811d45;
+  --color-violet-950: #4f0d27;
+}
+
 :root {
   --font-interface: "Manrope Variable", "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-editorial: "Playfair Display Variable", "Playfair Display", Georgia, serif;
+  --font-navigation: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -23,7 +38,7 @@
   }
   h4, h5, h6, button, input, textarea, select { font-family: var(--font-interface); }
   p { text-wrap: pretty; }
-  ::selection { background: rgba(196, 181, 253, .55); color: #21132f; }
+  ::selection { background: rgba(253, 164, 192, .48); color: #4f0d27; }
   a:visited { color: inherit; }
   html.dark { background: #0f0c14; }
   html.dark body { background: #0f0c14; color: #f5f1f2; }
@@ -39,6 +54,13 @@
 }
 
 nav, button, input, textarea, select, label { font-variation-settings: "wght" 520; }
+.customer-navigation nav,
+.customer-navigation nav *,
+.admin-shell nav,
+.admin-shell nav * {
+  font-family: var(--font-navigation) !important;
+  letter-spacing: .01em;
+}
 main :where(h1, h2) { line-height: .98; }
 main :where(h3) { line-height: 1.08; }
 
