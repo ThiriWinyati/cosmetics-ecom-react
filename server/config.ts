@@ -11,6 +11,8 @@ export const config = {
     user: process.env.DB_USER ?? "root",
     password: process.env.DB_PASSWORD ?? "",
     database: process.env.DB_NAME ?? "cosmetics_store",
-    ssl: process.env.DB_SSL === "true" ? {} : undefined,
+    ssl: process.env.DB_SSL === "true"
+      ? { rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED !== "false" }
+      : undefined,
   },
 };
