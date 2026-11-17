@@ -1,6 +1,7 @@
 import {Outlet} from "react-router";
 import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
+import FaqAssistant from "@/components/support/FaqAssistant";
 
 function RootLayout() {
     return (
@@ -10,6 +11,7 @@ function RootLayout() {
                 <Outlet />
             </main>
             <Footer />
+            <FaqAssistant />
         </div>
     );
 }

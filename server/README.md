@@ -29,3 +29,9 @@ The API runs at `http://localhost:4000/api` by default. Verify database access a
 - `/api/categories`, `/api/brands`, `/api/coupons`, `/api/shipping-methods`, `/api/payment-methods`, `/api/contact`: public storefront data
 
 Protected endpoints require `Authorization: Bearer <token>`. Never use the default JWT secret in production.
+
+## Store FAQ helper
+
+The storefront includes a local FAQ helper with predefined answers in `src/data/faqAssistant.ts`. It runs entirely in the browser, makes no AI or chat API requests, and requires no API key, credits or subscription. Conversation history stays in memory and clears on refresh. Keep its delivery and return answers in sync with the store policies. The existing human support chat is unchanged.
+
+The Beauty helper also offers a seven-question guided product finder: category, skin type, concern, sensitivity, finish, brand and per-product budget. `src/data/beautyFinder.ts` matches live catalogue descriptions in the browser, with strict category, brand, budget and finish filters. Skin type and concerns rank descriptive matches but do not establish medical suitability. Sensitivity exclusions require human ingredient verification. Missing catalogue data or unavailable products produce an honest empty state. The finder fetches `/api/products` without sending questionnaire answers; it never calls an AI provider. Edit questions and matching rules in that data file.
