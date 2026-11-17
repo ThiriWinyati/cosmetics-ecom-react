@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Product } from "@/data/store";
 import { api } from "@/lib/api";
+import { loadBeautyCatalogue } from "@/lib/beautyCatalogue";
 import { beautyQuestions, findBeautyMatches, type BeautyProfile } from "@/data/beautyFinder";
 
 export default function BeautyFinder({ onNavigate }: { onNavigate: () => void }) {
@@ -9,16 +10,18 @@ export default function BeautyFinder({ onNavigate }: { onNavigate: () => void })
   const [step, setStep] = useState(0);
   const [answer, setAnswer] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "ready" | "sample">("loading");
   const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     let active = true;
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 10_000);
     setStatus("loading");
-    api<Product[]>("/products").then((items) => {
+    loadBeautyCatalogue(() => api("/products", { signal: controller.signal })).then((result) => {
       if (!active) return;
-      setProducts(items); setStatus("ready");
-    }).catch(() => { if (active) setStatus("error"); });
-    return () => { active = false; };
+      setProducts(result.products); setStatus(result.source);
+    }).finally(() => window.clearTimeout(timeout));
+    return () => { active = false; window.clearTimeout(timeout); controller.abort(); };
   }, [attempt]);
   const question = beautyQuestions[step];
   function choose(value: string) {
@@ -44,10 +47,10 @@ export default function BeautyFinder({ onNavigate }: { onNavigate: () => void })
       <h3 className="text-lg font-semibold">Your beauty shortlist</h3>
       <dl className="grid grid-cols-2 gap-x-3 gap-y-2 rounded-2xl bg-violet-50 p-3 text-xs dark:bg-white/5">{beautyQuestions.map(({ key }) => <div key={key}><dt className="capitalize text-slate-500 dark:text-stone-400">{key}</dt><dd className="mt-1 break-words">{profile[key]}</dd></div>)}</dl>
       {status === "loading" && <p role="status" className="text-sm">Checking the store catalogue…</p>}
-      {status === "error" && <div role="status"><p className="text-sm">The catalogue is unavailable, so I can’t check your matches yet.</p><button type="button" onClick={() => setAttempt(attempt + 1)} className="mt-2 text-sm underline">Try again</button></div>}
-      {status === "ready" && result && <><p role="status" className="text-sm leading-6">{result.note}</p>{result.matches.map(({ product, reasons }) => <article key={product.id} className="rounded-2xl border border-violet-200 p-4">
+      {status === "sample" && <div role="status" className="rounded-2xl bg-amber-50 p-3 text-sm leading-6 text-amber-950 dark:bg-amber-950/40 dark:text-amber-100"><p>The live catalogue is unavailable. These are sample matches from our saved collection; prices, ingredients and availability may have changed. Ask our team to confirm details before buying.</p><button type="button" onClick={() => setAttempt(attempt + 1)} className="mt-2 text-sm underline">Retry live catalogue</button></div>}
+      {status !== "loading" && result && <><p role="status" className="text-sm leading-6">{result.note}</p>{result.matches.map(({ product, reasons }) => <article key={product.id} className="rounded-2xl border border-violet-200 p-4">
         <p className="text-xs text-slate-500 dark:text-stone-400">{product.brand}</p>
-        <Link to={`/products/${product.id}`} onClick={onNavigate} className="mt-1 block font-semibold underline">{product.name} · £{product.price.toFixed(2)}</Link>
+        <Link to={`/products/${product.id}`} onClick={onNavigate} className="mt-1 block font-semibold underline">{product.name} · {status === "sample" ? "Saved price " : ""}£{product.price.toFixed(2)}</Link>
         <p className="mt-2 text-xs leading-5">{product.description}</p>
         <ul className="mt-3 space-y-1 text-xs text-slate-600 dark:text-stone-300">{reasons.map((reason) => <li key={reason}>• {reason}</li>)}</ul>
       </article>)}</>}

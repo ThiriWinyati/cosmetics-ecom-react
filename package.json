@@ -14,7 +14,8 @@
     "db:import": "mysql -u root -p cosmetics_store < server/database/cosmetics_store.sql",
     "db:import:render": "tsx server/scripts/import-database.ts",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:beauty": "node --import tsx --test tests/beautyCatalogue.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

@@ -192,6 +192,18 @@ Customer checkout calculations are repeated and validated on the server. The `WE
 
 The included `render.yaml` configures one Node web service that builds React and runs Express. Render supplies the production `PORT`, and the server listens on `0.0.0.0` as required.
 
+### Fixing a frontend that loads but has missing API or page routes
+
+If `/` loads while `/api/health`, `/api/products` and direct visits to `/contact` return 404, check the service type and routing in Render. A static frontend does not run this Express API.
+
+- For the full application, use a **Node Web Service** with `render.yaml`, build command `npm ci --include=dev && npm run build && npm run build:api`, start command `npm start`, `NODE_ENV=production`, and `VITE_API_URL=/api`. Configure the existing MySQL connection with `DB_*`. Verify both `/api/health` and `/api/products` return JSON after deploying. The Express production server also serves React routes such as `/contact`.
+- For a static portfolio preview, retain the Static Site and add a **Rewrite** in Render's Redirects/Rewrites settings: source `/*`, destination `/index.html`. `render-static.yaml` documents the equivalent Blueprint. This fixes direct React page visits but does not provide an API. Existing dashboard services do not automatically adopt an additional Blueprint file.
+- If the API is hosted separately, set `VITE_API_URL` to its public HTTPS `/api` URL and rebuild the frontend. Set that API's `CLIENT_ORIGIN` to the frontend origin. Never use a visitor's `localhost` as the production API address.
+
+The beauty finder uses the bundled sample catalogue when the live endpoint fails, times out after 10 seconds or returns invalid data. Sample matches and saved prices are labelled; they are not a substitute for verified availability or ingredient data. Login, order history and contact submissions still require a working API and database. No paid AI service is used.
+
+Render references: [Node deployment](https://render.com/docs/deploy-node-express-app), [static site routing](https://render.com/docs/redirects-rewrites).
+
 ### Required Render environment variables
 
 ```text

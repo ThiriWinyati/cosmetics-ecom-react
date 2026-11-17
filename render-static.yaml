@@ -1,0 +1,17 @@
+# Optional static-only portfolio deployment. No Express API is started here.
+# For an existing Static Site, apply the matching rewrite in its Render settings.
+# For accounts, orders and live catalogue data, use render.yaml instead.
+services:
+  - type: web
+    name: cosmetics-ecom-react
+    runtime: static
+    buildCommand: npm ci --include=dev && npm run build
+    staticPublishPath: ./dist
+    autoDeployTrigger: commit
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: NODE_VERSION
+        value: 24
