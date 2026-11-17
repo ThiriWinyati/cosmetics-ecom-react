@@ -3,7 +3,7 @@ import {siteConfig} from "@/config/site.ts";
 
 function Header() {
   return (
-    <header>
+    <header className="sticky top-0 z-50">
       <MainNavigation items={siteConfig.mainNav}/>
     </header>
   );

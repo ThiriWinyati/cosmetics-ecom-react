@@ -35,8 +35,6 @@ export const router = createBrowserRouter([
       { path: "shipping-returns", element: <InfoPage type="shipping" /> },
       { path: "privacy", element: <InfoPage type="privacy" /> },
       { path: "terms", element: <InfoPage type="terms" /> },
-      { path: "login", element: <AuthPage mode="login" /> },
-      { path: "signup", element: <AuthPage mode="signup" /> },
       { path: "forgot-password", element: <AuthPage mode="forgot" /> },
       { path: "profile", Component: Profile },
       { path: "orders", Component: CustomerOrders },
@@ -46,6 +44,8 @@ export const router = createBrowserRouter([
       { path: "checkout", Component: Checkout },
     ],
   },
+  { path: "/login", element: <AuthPage mode="login" /> },
+  { path: "/signup", element: <AuthPage mode="signup" /> },
   { path: "/admin/login", Component: AdminLogin },
   { path: "/admin", Component: AdminLayout, children: [{ index: true, Component: AdminDashboard }, { path: "products/new", Component: ProductForm }, { path: "products/:productId/edit", Component: ProductForm }, { path: "messages", Component: AdminMessages }, { path: "chat", Component: AdminChat }, { path: ":resource", Component: AdminResource }] },
 ]);

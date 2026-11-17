@@ -8,6 +8,8 @@ import { requireAuth, signToken, type AuthRequest } from "../middleware/auth.js"
 export const authRouter = Router();
 const googleClient = new OAuth2Client();
 
+const ensureWelcomeCoupon = () => db.execute("INSERT INTO coupons (Coupon_Code, Discount_Percentage, Valid_From, Valid_To, Minimum_Purchase_Amount) VALUES ('WELCOME10', 10, NOW(), DATE_ADD(NOW(), INTERVAL 10 YEAR), 0) ON DUPLICATE KEY UPDATE Discount_Percentage=10, Valid_To=DATE_ADD(NOW(), INTERVAL 10 YEAR), Minimum_Purchase_Amount=0");
+
 const verifyPassword = (password: string, hash: string) => bcrypt.compare(password, hash.replace(/^\$2y\$/, "$2b$"));
 const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s]).{8,128}$/;
 
@@ -21,6 +23,7 @@ authRouter.post("/customer/register", async (request, response) => {
   if (!strongPassword.test(password)) return response.status(400).json({ message: "Password must be 8–128 characters and include uppercase, lowercase, a number and a special character" });
   const [existing] = await db.query("SELECT Customer_ID FROM customers WHERE Email = ?", [email]);
   if (Array.isArray(existing) && existing.length) return response.status(409).json({ message: "Email is already registered" });
+  await ensureWelcomeCoupon();
   const hash = await bcrypt.hash(password, 12);
   const [result] = await db.execute("INSERT INTO customers (Name, Email, Password, Phone, Address) VALUES (?, ?, ?, ?, ?)", [name, email, hash, phone, address]);
   const id = (result as { insertId: number }).insertId;
@@ -41,15 +44,17 @@ authRouter.post("/customer/google", async (request, response) => {
   const profile = ticket.getPayload();
   if (!profile?.sub || !profile.email || !profile.email_verified) return response.status(401).json({ message: "Google could not verify this account" });
   const [rows] = await db.query("SELECT Customer_ID id, Name name, Email email FROM customers WHERE Google_Sub=? OR Email=? LIMIT 1", [profile.sub, profile.email]);
+  const isNewCustomer = !(rows as object[]).length;
   let user = (rows as Array<{ id: number; name: string; email: string }>)[0];
   if (user) {
     await db.execute("UPDATE customers SET Google_Sub=COALESCE(Google_Sub, ?), Profile_Picture=COALESCE(?, Profile_Picture) WHERE Customer_ID=?", [profile.sub, profile.picture ?? null, user.id]);
   } else {
+    await ensureWelcomeCoupon();
     const unusablePassword = await bcrypt.hash(`${profile.sub}:${crypto.randomUUID()}`, 12);
     const [result] = await db.execute("INSERT INTO customers (Name, Email, Password, Phone, Address, Profile_Picture, Google_Sub) VALUES (?, ?, ?, '', '', ?, ?)", [profile.name ?? "Google customer", profile.email, unusablePassword, profile.picture ?? null, profile.sub]);
     user = { id: (result as { insertId: number }).insertId, name: profile.name ?? "Google customer", email: profile.email };
   }
-  response.json({ token: signToken({ id: user.id, name: user.name, role: "customer" }), user: { ...user, role: "customer" } });
+  response.json({ isNewCustomer, token: signToken({ id: user.id, name: user.name, role: "customer" }), user: { ...user, role: "customer" } });
 });
 
 authRouter.post("/admin/login", async (request, response) => {

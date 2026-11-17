@@ -11,6 +11,7 @@ type ContactMessage = {
   message: string;
   submittedAt: string;
   customerId: number | null;
+  isRead: number | boolean;
 };
 
 const formatDate = (value: string) => new Date(value).toLocaleString("en-GB", {
@@ -32,6 +33,7 @@ export default function AdminMessages() {
     try {
       const data = await api<ContactMessage[]>("/admin/messages");
       setMessages(data);
+      setReadIds(new Set(data.filter((item) => Number(item.isRead)).map((item) => item.id)));
       setSelectedId((current) => current && data.some((item) => item.id === current) ? current : data[0]?.id ?? null);
       setError("");
     } catch (reason) {
@@ -45,7 +47,13 @@ export default function AdminMessages() {
   useEffect(() => { void loadMessages(); }, [loadMessages]);
   useEffect(() => { setQuery(searchParams.get("search") ?? ""); }, [searchParams]);
   useEffect(() => {
-    if (selectedId !== null) setReadIds((current) => new Set(current).add(selectedId));
+    if (selectedId === null) return;
+    let active = true;
+    api(`/admin/messages/${selectedId}/read`, { method: "PATCH" }).then(() => {
+      if (active) setReadIds((current) => new Set(current).add(selectedId));
+      window.dispatchEvent(new Event("admin-support-updated"));
+    }).catch((reason) => { if (active) setError(reason instanceof Error ? reason.message : "Message could not be marked as read"); });
+    return () => { active = false; };
   }, [selectedId]);
 
   const visible = useMemo(() => {
@@ -60,6 +68,7 @@ export default function AdminMessages() {
       await api(`/admin/messages/${message.id}`, { method: "DELETE" });
       const remaining = messages.filter((item) => item.id !== message.id);
       setMessages(remaining);
+      window.dispatchEvent(new Event("admin-support-updated"));
       setSelectedId(remaining[0]?.id ?? null);
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Message could not be deleted");
@@ -67,14 +76,14 @@ export default function AdminMessages() {
   };
 
   return <div className="mx-auto max-w-[1500px]">
-    <div className="flex flex-wrap items-end justify-between gap-5">
-      <div><p className="text-xs font-semibold uppercase tracking-[.2em] text-violet-400">Customer care</p><h1 className="mt-3 text-3xl font-semibold tracking-[-.035em] sm:text-4xl">Messages</h1><p className="mt-2 text-sm text-slate-500 dark:text-stone-400">Review enquiries sent through the storefront contact form.</p></div>
+    <div className="flex flex-wrap items-center justify-end gap-3">
+
       <button type="button" onClick={() => void loadMessages(true)} disabled={refreshing} className="admin-secondary rounded-full"><RefreshCw className={`size-4 ${refreshing ? "animate-spin" : ""}`} />{refreshing ? "Refreshing" : "Refresh inbox"}</button>
     </div>
 
     {error && <p role="alert" className="mt-5 rounded-2xl border border-violet-100 bg-violet-50 p-4 text-sm text-violet-600 dark:border-violet-300/15 dark:bg-violet-300/10 dark:text-violet-200">{error}</p>}
 
-    <div className="mt-8 grid min-h-[650px] overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_25px_70px_-45px_rgba(15,23,42,.35)] dark:border-white/10 dark:bg-[#19151f] lg:grid-cols-[380px_1fr]">
+    <div className="mt-4 grid min-h-[650px] overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_25px_70px_-45px_rgba(15,23,42,.35)] dark:border-white/10 dark:bg-[#19151f] lg:grid-cols-[380px_1fr]">
       <aside className="flex min-h-0 flex-col border-b border-slate-200 bg-slate-50/70 dark:border-white/10 dark:bg-white/[.025] lg:border-b-0 lg:border-r">
         <div className="border-b border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-[#19151f]"><div className="flex items-center justify-between"><div><h2 className="font-semibold">Contact inbox</h2><p className="mt-1 text-xs text-slate-400">{visible.length} {visible.length === 1 ? "message" : "messages"}</p></div><span className="grid size-10 place-items-center rounded-2xl bg-violet-100 text-violet-600 dark:bg-violet-300/15 dark:text-violet-200"><Inbox className="size-4.5" /></span></div><label className="relative mt-4 block"><Search className="absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-slate-400" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search sender or subject…" className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 pl-10 pr-4 text-sm outline-none transition focus:border-violet-300 focus:ring-4 focus:ring-violet-50 dark:border-white/10 dark:bg-white/5 dark:focus:border-violet-300/40 dark:focus:ring-violet-300/10" /></label></div>
         <div className="min-h-0 flex-1 overflow-y-auto p-3">

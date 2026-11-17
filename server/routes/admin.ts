@@ -55,7 +55,19 @@ adminRouter.get("/reviews", async (_request, response) => { const [rows] = await
 adminRouter.delete("/reviews/:id", async (request, response) => { await db.execute("DELETE FROM reviews WHERE Review_ID=?", [request.params.id]); response.status(204).end(); });
 adminRouter.get("/deliveries", async (_request, response) => { const [rows] = await db.query("SELECT s.Shipping_ID id, s.Order_ID `order`, s.Shipping_Status status, s.Shipping_Date date, sm.Shipping_Method method, c.Name customer, c.Email email, o.Shipping_Address address, GROUP_CONCAT(p.Name SEPARATOR ', ') products FROM shipping s LEFT JOIN shippingmethods sm ON sm.Shipping_Method_ID=s.Shipping_Method_ID LEFT JOIN orders o ON o.Order_ID=s.Order_ID LEFT JOIN customers c ON c.Customer_ID=o.Customer_ID LEFT JOIN order_items oi ON oi.Order_ID=o.Order_ID LEFT JOIN products p ON p.Product_ID=oi.Product_ID GROUP BY s.Shipping_ID, s.Order_ID, s.Shipping_Status, s.Shipping_Date, sm.Shipping_Method, c.Name, c.Email, o.Shipping_Address ORDER BY s.Shipping_Date DESC"); response.json(rows); });
 adminRouter.patch("/deliveries/:id/status", async (request, response) => { await db.execute("UPDATE shipping SET Shipping_Status=? WHERE Shipping_ID=?", [request.body.status, request.params.id]); response.json({ message: "Delivery updated" }); });
-adminRouter.get("/messages", async (_request, response) => { const [rows] = await db.query("SELECT id, name, email, subject, message, submission_date submittedAt, customer_id customerId FROM contactmessages ORDER BY submission_date DESC"); response.json(rows); });
+const ensureContactReads = () => db.execute("CREATE TABLE IF NOT EXISTS contact_message_reads (message_id INT NOT NULL PRIMARY KEY, read_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)");
+adminRouter.get("/messages", async (_request, response) => {
+  await ensureContactReads();
+  const [rows] = await db.query("SELECT m.id, m.name, m.email, m.subject, m.message, m.submission_date submittedAt, m.customer_id customerId, (r.message_id IS NOT NULL) isRead FROM contactmessages m LEFT JOIN contact_message_reads r ON r.message_id=m.id ORDER BY m.submission_date DESC");
+  response.json(rows);
+});
+adminRouter.patch("/messages/:id/read", async (request, response) => {
+  const id = Number(request.params.id);
+  if (!Number.isInteger(id) || id <= 0) return response.status(400).json({ message: "Invalid message ID" });
+  await ensureContactReads();
+  await db.execute("INSERT IGNORE INTO contact_message_reads (message_id) SELECT id FROM contactmessages WHERE id=?", [id]);
+  response.status(204).end();
+});
 adminRouter.delete("/messages/:id", async (request, response) => { await db.execute("DELETE FROM contactmessages WHERE id=?", [request.params.id]); response.status(204).end(); });
 adminRouter.get("/chat", async (request, response) => { const readCustomerId = Number(request.query.readCustomerId); if (Number.isInteger(readCustomerId) && readCustomerId > 0) await db.execute("UPDATE chat_messages SET admin_read=1 WHERE customer_id=? AND admin_id IS NULL AND (admin_read=0 OR admin_read IS NULL)", [readCustomerId]); const [rows] = await db.query("SELECT m.id, m.customer_id customerId, m.admin_id adminId, m.message, m.timestamp, m.admin_read adminRead, c.Name customer, c.Email email, a.Name admin FROM chat_messages m LEFT JOIN customers c ON c.Customer_ID=m.customer_id LEFT JOIN admin_users a ON a.Admin_User_ID=m.admin_id WHERE m.customer_id IS NOT NULL ORDER BY m.timestamp, m.id"); response.json(rows); });
 adminRouter.patch("/chat/:customerId/read", async (request, response) => {

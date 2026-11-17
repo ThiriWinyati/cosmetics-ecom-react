@@ -70,10 +70,8 @@ customerRouter.post("/orders", async (request: AuthRequest, response) => {
       if (!coupon) throw new Error("This discount code is no longer valid");
       if (subtotal < Number(coupon.minimum)) throw new Error(`This discount requires a minimum spend of £${Number(coupon.minimum).toFixed(2)}`);
       if (coupon.code.toUpperCase() === "WELCOME10") {
-        const [subscriberRows] = await connection.query("SELECT ns.id FROM customers c JOIN newsletter_subscribers ns ON LOWER(ns.email)=LOWER(c.Email) WHERE c.Customer_ID=? LIMIT 1", [request.user!.id]);
-        if (!(subscriberRows as object[]).length) throw new Error("WELCOME10 is available only to newsletter members using the same account email");
-        const [usedRows] = await connection.query("SELECT Order_ID FROM orders WHERE Customer_ID=? AND cupon_id=? LIMIT 1", [request.user!.id, couponId]);
-        if ((usedRows as object[]).length) throw new Error("Your newsletter welcome offer has already been used");
+        const [usedRows] = await connection.query("SELECT Order_ID FROM orders WHERE Customer_ID=? LIMIT 1", [request.user!.id]);
+        if ((usedRows as object[]).length) throw new Error("WELCOME10 is available only on your first order");
       }
       discount = subtotal * Number(coupon.discount) / 100;
     }

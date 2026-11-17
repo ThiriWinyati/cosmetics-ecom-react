@@ -1,4 +1,4 @@
-import { CheckCheck, Clock3, Inbox, MessageCircle, RefreshCw, Search, Send, Sparkles, UserRound } from "lucide-react";
+import { CheckCheck, Clock3, Inbox, MessageCircle, RefreshCw, Search, Send, UserRound } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api } from "@/lib/api";
 
@@ -106,12 +106,7 @@ export default function AdminChat() {
 
   return (
     <div className="mx-auto max-w-[1500px]">
-      <div className="flex flex-wrap items-end justify-between gap-5">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-violet-400"><Sparkles className="size-3.5" /> Customer care</div>
-          <h1 className="mt-3 text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">Live conversations</h1>
-          <p className="mt-2 text-sm text-slate-500">Answer questions and help customers in one calm workspace.</p>
-        </div>
+      <div className="flex flex-wrap items-center justify-end gap-3">
         <div className="flex items-center gap-3">
           {totalUnread > 0 && <span className="rounded-full bg-violet-50 px-3.5 py-2 text-xs font-semibold text-violet-500">{totalUnread} unread</span>}
           <button type="button" onClick={() => void loadMessages(true)} className="admin-secondary rounded-full" disabled={refreshing}>
@@ -122,7 +117,7 @@ export default function AdminChat() {
 
       {error && <p role="alert" className="mt-5 rounded-2xl border border-violet-50 bg-violet-50 p-4 text-sm text-violet-600">{error}</p>}
 
-      <div className="mt-8 grid min-h-[680px] overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_25px_70px_-45px_rgba(15,23,42,.35)] lg:sticky lg:top-24 lg:h-[calc(100vh-7rem)] lg:min-h-0 lg:grid-cols-[350px_1fr]">
+      <div className="mt-4 grid min-h-[680px] overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_25px_70px_-45px_rgba(15,23,42,.35)] lg:sticky lg:top-24 lg:h-[calc(100vh-7rem)] lg:min-h-0 lg:grid-cols-[350px_1fr]">
         <aside className="flex min-h-0 flex-col border-b border-slate-200 bg-[#fcfbfb] lg:border-b-0 lg:border-r">
           <div className="border-b border-slate-200 bg-white p-5">
             <div className="flex items-center justify-between">

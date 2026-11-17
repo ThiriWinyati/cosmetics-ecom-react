@@ -49,15 +49,16 @@ export default function AdminLayout() {
     const loadCounts = async () => {
       try {
         const [messages, chat] = await Promise.all([
-          api<unknown[]>("/admin/messages"),
+          api<{ isRead: number | boolean }[]>("/admin/messages"),
           api<SupportMessage[]>("/admin/chat"),
         ]);
-        if (active) setSupportCounts({ messages: messages.length, chat: chat.filter((item) => item.adminId === null && !Number(item.adminRead)).length });
+        if (active) setSupportCounts({ messages: messages.filter((item) => !Number(item.isRead)).length, chat: chat.filter((item) => item.adminId === null && !Number(item.adminRead)).length });
       } catch { /* The active page will surface authentication or API errors. */ }
     };
     void loadCounts();
     const timer = window.setInterval(loadCounts, 15000);
-    return () => { active = false; window.clearInterval(timer); };
+    window.addEventListener("admin-support-updated", loadCounts);
+    return () => { active = false; window.clearInterval(timer); window.removeEventListener("admin-support-updated", loadCounts); };
   }, []);
 
   const submitWorkspaceSearch = (event: FormEvent) => {
@@ -91,7 +92,7 @@ export default function AdminLayout() {
     <div className="lg:pl-72">
       <header className="sticky top-0 z-40 flex h-20 items-center gap-3 border-b border-slate-200/80 bg-white/85 px-4 shadow-[0_1px_15px_rgba(15,23,42,.025)] backdrop-blur-xl dark:border-white/8 dark:bg-[#16121c]/90 sm:px-6 lg:px-8">
         <button onClick={() => setOpen(true)} aria-label="Open admin navigation" className="grid size-10 shrink-0 place-items-center rounded-xl border border-slate-200 hover:bg-slate-50 dark:border-white/10 dark:hover:bg-white/8 lg:hidden"><Menu className="size-5" /></button>
-        <div className="hidden min-w-0 sm:block"><p className="text-[9px] font-semibold uppercase tracking-[.2em] text-violet-400">Admin dashboard</p><h1 className="mt-1 truncate text-sm font-semibold">{pageName}</h1></div>
+        <div className="min-w-0"><p className="text-[9px] font-semibold uppercase tracking-[.2em] text-violet-400">Admin dashboard</p><h1 className="mt-1 truncate text-sm font-semibold">{pageName}</h1></div>
         <form onSubmit={submitWorkspaceSearch} className="relative ml-auto hidden w-full max-w-sm md:block"><label><span className="sr-only">Search admin</span><Search className="absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-slate-400" /><input value={workspaceSearch} onChange={(event) => setWorkspaceSearch(event.target.value)} placeholder={`Search ${activeResource?.label.toLowerCase() ?? "workspace"}…`} className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50 pl-10 pr-12 text-xs outline-none transition focus:border-violet-300 focus:bg-white focus:ring-4 focus:ring-violet-50 dark:border-white/8 dark:bg-white/5 dark:focus:border-violet-300/40 dark:focus:bg-white/8 dark:focus:ring-violet-300/10" /></label><button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-white px-2 py-1 text-[9px] font-bold text-slate-400 shadow-sm dark:bg-white/8">↵</button></form>
         <button type="button" onClick={() => setDarkMode((current) => !current)} aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"} title={darkMode ? "Light mode" : "Dark mode"} className="grid size-10 shrink-0 place-items-center rounded-xl border border-slate-200 transition hover:bg-slate-50 dark:border-white/10 dark:hover:bg-white/8">{darkMode ? <Sun className="size-4.5" /> : <Moon className="size-4.5" />}</button>
         <AdminUserMenu name={user?.name ?? "Admin"} email={user?.email} onSignOut={signOut} />
